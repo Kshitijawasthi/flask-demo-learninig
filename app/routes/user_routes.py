@@ -33,3 +33,14 @@ def create_user():
 def get_users():
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200
+
+# get user + posts
+@user_bp.route('/user/<int:user_id>', methods=['GET'])
+def get_user_with_post(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify({
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "posts": [p.to_dict() for p in user.posts]
+    }), 200
