@@ -17,6 +17,8 @@ def create_app():
     db.init_app(app)
 
     from app.routes.user_routes import user_bp
+    from app.routes.post_routes import post_bp
     app.register_blueprint(user_bp)
+    app.register_blueprint(post_bp)
 
     return app

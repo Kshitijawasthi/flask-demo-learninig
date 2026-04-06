@@ -7,7 +7,7 @@ from app import db
 user_bp = Blueprint('user', __name__, url_prefix='/api')
 
 # CREATE
-@user_bp.route('/user', methods=['POST'])
+@user_bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json(silent=True)
 
@@ -35,7 +35,7 @@ def get_users():
     return jsonify([u.to_dict() for u in users]), 200
 
 # get user + posts
-@user_bp.route('/user/<int:user_id>', methods=['GET'])
+@user_bp.route('/users/<int:user_id>', methods=['GET'])
 def get_user_with_post(user_id):
     user = User.query.get_or_404(user_id)
     return jsonify({
