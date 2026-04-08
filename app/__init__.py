@@ -1,14 +1,15 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from settings import Config   # ✅ IMPORTANT (direct import)
 from flask_jwt_extended import JWTManager
+from app.utils.errors import AppError
 db = SQLAlchemy()
 jwt=JWTManager()
 
 def create_app():
     app = Flask(__name__)
 
-    # ✅ LOAD CONFIG
+    
     app.config.from_object(Config)
 
     app.config["JWT_SECRET_KEY"]="super-secret-key"
@@ -26,5 +27,21 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(post_bp)
     app.register_blueprint(auth_bp)
+
+
+    # Global handlers
+    @app.errorhandler(AppError)
+    def handle_app_error(error):    #noqa
+        return jsonify({
+            "success":False,
+            "message":error.message
+        }), error.status_code
+    
+    @app.errorhandler(Exception)
+    def handle_generic_error(error):
+        return jsonify({
+            "success":False,
+            "message":"Internal Server Error"
+        }),500
 
     return app

@@ -6,12 +6,14 @@ class User(db.Model):
     username=db.Column(db.String(100),unique=True,nullable=False)
     email=db.Column(db.String(100),unique=True,nullable=False)
     password=db.Column(db.String(200),nullable=False)
+    role=db.Column(db.String(50),default="user")
 
     def to_dict(self):
         return{
             "id":self.id,
             "username":self.username,
-            "email":self.email
+            "email":self.email,
+            "role":self.role
         }
 
     
