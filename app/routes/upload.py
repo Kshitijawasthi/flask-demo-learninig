@@ -1,6 +1,5 @@
 from flask import Blueprint,request,jsonify
 from app.services.upload_service import upload_image
-from app.utils.errors import AppError
 
 upload_bp = Blueprint("upload",__name__)
 
