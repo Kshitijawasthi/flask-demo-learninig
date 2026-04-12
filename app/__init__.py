@@ -3,14 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from settings import Config   # ✅ IMPORTANT (direct import)
 from flask_jwt_extended import JWTManager
 from app.utils.errors import AppError
+import os
+
+import settings
 db = SQLAlchemy()
 jwt=JWTManager()
 
 def create_app():
     app = Flask(__name__)
 
-    
-    app.config.from_object(Config)
+    env=os.getenv("FLASK_ENV")
+
+    if(env=="development"):
+        app.config.from_object(settings.DevelopmentConfig)
+    else:
+        app.config.from_object(settings.ProductionConfig)
 
     app.config["JWT_SECRET_KEY"]="super-secret-key"
 
